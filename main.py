@@ -4,6 +4,8 @@ app = Flask(__name__)
 @app.route('/')
 def root():
     return render_template('index.html', name='ryan')
-#   return "welcome to flask!"
 
+@app.route('/newgame')
+def newgame():
+    return "Starting a new game"
 app.run()
