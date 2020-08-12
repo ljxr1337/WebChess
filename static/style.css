@@ -19,3 +19,10 @@ a {
     font-family: "Montserrat", sans-serif;
     font-size: 20px;
 }
+
+body {
+    background-image: url("https://www.wallpapers4u.org/wp-content/uploads/board_game_chess_party_figures_black_white_8820_1920x1080.jpg");
+    background-position: center center;
+    background-size: contain;
+    background-repeat: no-repeat;
+}
