@@ -1,0 +1,46 @@
+img {
+    height: 380px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 410px;
+}
+
+p {
+    color: rgba(255, 255, 255, .5);
+    text-align: center;
+    font-family: "Raleway", sans-serif;
+    font-size: 20px;
+}
+
+.lead {
+    color: white;
+}
+
+a {
+    color: lightsalmon;
+    text-align: center;
+    font-family: "Montserrat", sans-serif;
+    font-size: 20px;
+}
+
+.div-center {
+    margin: auto;
+}
+
+.jumbotron {
+    display: block;
+    background-color: #6b7a8f;
+    color: rgb(255, 255, 255);
+    padding: 100px 25px;
+    font-family: Montserrat, sans-serif;
+    min-height: 100vh;
+    vertical-align: middle;
+}
+
+.btn {
+    background-color: white;
+    vertical-align: middle;
+    display: inline-block;
+    text-align: center;
+}
