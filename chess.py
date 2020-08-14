@@ -48,6 +48,13 @@ class King(BasePiece):
         x, y, dist = self.vector(start, end)
         return dist == 1
 
+    def get_symbol(self):
+        if self.colour == "white":
+            return "♔"
+        else:
+            return "♚"
+
+
 
 class Queen(BasePiece):
     name = 'queen'
@@ -63,6 +70,11 @@ class Queen(BasePiece):
         else:
             return False
 
+    def get_symbol(self):
+        if self.colour == "white":
+            return "♕"
+        else:
+            return "♛"
 
 class Bishop(BasePiece):
     name = 'bishop'
@@ -76,6 +88,11 @@ class Bishop(BasePiece):
         else:
             return False
 
+    def get_symbol(self):
+        if self.colour == "white":
+            return "♗"
+        else:
+            return "♝"
 
 class Knight(BasePiece):
     name = 'knight'
@@ -88,6 +105,12 @@ class Knight(BasePiece):
             return True
         else:
             return False
+
+    def get_symbol(self):
+        if self.colour == "white":
+            return "♘"
+        else:
+            return "♞"
 
 
 class Rook(BasePiece):
@@ -114,6 +137,11 @@ class Rook(BasePiece):
                 return True
             else:
                 return False
+    def get_symbol(self):
+        if self.colour == "white":
+            return "♖"
+        else:
+            return "♜"
 
 
 class Pawn(BasePiece):
@@ -129,6 +157,12 @@ class Pawn(BasePiece):
                     or self.colour == 'white' and y == 1:
                 return True
         return False
+
+    def get_symbol(self):
+        if self.colour == "white":
+            return "♙"
+        else:
+            return "♟︎"
 
 
 class Board:
@@ -366,31 +400,24 @@ class Board:
         if self.debug:
             print('== DEBUG MODE ON ==')
         # helper function to generate symbols for piece
-        def sym(piece):
-            colour_sym = piece.colour[0].upper()
-            piece_sym = piece.name[0].upper()
-            return f'{colour_sym}{piece_sym}'
 
+        board = [[' ', "0", "1", "2", "3", "4", "5", "6", "7"]]
         # Row 7 is at the top, so print in reverse order
-        print(' ' * 4, end='')
-        print('  '.join([f'{i:2}' for i in range(8)]), end='\n\n')
         for row in range(7, -1, -1):
-            print(f'{row:2}  ', end='')
+            rowlist = []
+            rowlist.append(str(row))
             for col in range(8):
                 coord = (col, row)  # tuple
                 if coord in self.coords():
                     piece = self.get_piece(coord)
-                    print(f'{sym(piece)}', end='')
+                    rowlist.append(f'{piece.get_symbol()}')
                 else:
                     piece = None
-                    print('  ', end='')
-                if col == 7:     # Put line break at the end
-                    print('')
-                else:            # Print two spaces between pieces
-                    print('  ', end='')
-            print(' '*15)
+                    rowlist.append('  ')
+            board.append(rowlist)
             if self.checkmate is not None:
                 print(f'{self.checkmate} is checkmated!')
+        return board
 
     def prompt(self):
         if self.debug:

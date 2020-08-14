@@ -8,16 +8,27 @@
     <div class="jumbotron text-center">
         <h1>ChessGame</h1> 
         <br>&nbsp;
-          
-        <form action="play" method="post">
+        
+        <table>
+            {% for row in ui.board %}
+                <tr>
+                {% for cell in row %}
+                    <td>&nbsp{{ cell }}&nbsp</td>
+                {% endfor %}
+                </tr>
+            {% endfor %}
+        </table>
+        <br>&nbsp;
+        <form action="play" method="get">
         <div class="input-group col-xs-9 col-md-3 div-center">
             <input name="move" type="text" required="" class="form-control" id="move" placeholder="{{player}}" size="32">
             <br>&nbsp;
         </div>
+    
         <div class="input-group col-xs-9 col-md-3 div-center">
             <input name="submit" type="submit" class="btn btn-default mx-auto d-block" id="submit" value="&nbsp;&nbsp;&nbsp;&nbsp;Move&nbsp;&nbsp;&nbsp;&nbsp;">
             <br>&nbsp;
-        </div>
-        </form>
+    </div>
+        </form>  
       </div>
 </body>
