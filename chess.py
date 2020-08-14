@@ -419,7 +419,7 @@ class Board:
                 print(f'{self.checkmate} is checkmated!')
         return board
 
-    def prompt(self):
+    def prompt(self, move):
         if self.debug:
             print('== PROMPT ==')
         def valid_format(inputstr):
@@ -441,7 +441,7 @@ class Board:
             return (start, end)
 
         while True:
-            inputstr = input(f'{self.turn.title()} player: ')
+            inputstr = move
             if not valid_format(inputstr):
                 print('Invalid move. Please enter your move in the '
                       'following format: __ __, _ represents a digit.')
