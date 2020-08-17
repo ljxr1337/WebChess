@@ -3,9 +3,10 @@ from flask import render_template, redirect, request
 # from werkzeug.wrappers import Request
 from chess import WebInterface, Board
 
+
 app = Flask(__name__)
 ui = WebInterface()
-game = Board(debug=True)
+game = Board()
 
 @app.route('/')
 def root():
@@ -33,10 +34,13 @@ def play():
     if move is None:
         return render_template('chess.html', ui=ui)
     else:
-        if game.prompt(move) == False:
-            return render_template('chess.html', ui=ui, error="Invalid Move!")
+        valid, output = game.prompt(move)
+        if not valid:
+            ui.errmsg = output
+            return render_template('chess.html', ui=ui)
         else:
-            start, end = game.prompt(move)
+            ui.errmsg = None
+            start, end = output
             game.update(start, end)
             game.next_turn()
             ui.turn = game.turn

@@ -443,19 +443,19 @@ class Board:
         while True:
             inputstr = move
             if not valid_format(inputstr):
-                print('Invalid move. Please enter your move in the '
-                      'following format: __ __, _ represents a digit.')
-                return False
+                # print('Invalid move. Please enter your move in the '
+                #       'following format: __ __, _ represents a digit.')
+                return False , 'Invalid move. Please enter your move in the following format: __ __, _ represents a digit.'
             elif not valid_num(inputstr):
-                print('Invalid move. Move digits should be 0-7.')
-                return False
+                # print('Invalid move. Move digits should be 0-7.')
+                return False, 'Invalid move. Move digits should be 0-7.'
             else:
                 start, end = split_and_convert(inputstr)
                 if self.movetype(start, end) is None:
-                    print('Invalid move. Please make a valid move.')
-                    return False
+                    # print('Invalid move. Please make a valid move.')
+                    return False, 'Invalid move. Please make a valid move.'
                 else:
-                    return start, end
+                    return True, (start, end)
 
     def update(self, start, end):
         '''
