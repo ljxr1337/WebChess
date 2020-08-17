@@ -445,12 +445,15 @@ class Board:
             if not valid_format(inputstr):
                 print('Invalid move. Please enter your move in the '
                       'following format: __ __, _ represents a digit.')
+                return False
             elif not valid_num(inputstr):
                 print('Invalid move. Move digits should be 0-7.')
+                return False
             else:
                 start, end = split_and_convert(inputstr)
                 if self.movetype(start, end) is None:
                     print('Invalid move. Please make a valid move.')
+                    return False
                 else:
                     return start, end
 
