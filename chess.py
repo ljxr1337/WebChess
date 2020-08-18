@@ -4,6 +4,7 @@ class WebInterface:
         self.btnlabel = None
         self.errmsg = None
         self.board = None
+        self.info = None
 
 
 
@@ -204,6 +205,7 @@ class Board:
         self._position = {}
         self.winner = None
         self.checkmate = None
+        self.info = None
     
     def coords(self):
         return list(self._position.keys())
@@ -352,14 +354,13 @@ class Board:
     def printmove(self, start, end, **kwargs):
         startstr = f'{start[0]}{start[1]}'
         endstr = f'{end[0]}{end[1]}'
-        print(f'{self.get_piece(start)} {startstr} -> {endstr}', end='')
+        self.info = f'{self.get_piece(start)} {startstr} -> {endstr}'
         if kwargs.get('capture', False):
-            print(f' captures {self.get_piece(end)}')
+            self.info = self.info + f' captures {self.get_piece(end)}'
         elif kwargs.get('castling', False):
-            print(f' (castling)')
+            self.info = self.info + f' (castling)'
         else:
-            print('')
-
+            self.info = self.info + ''
     def start(self):
         colour = 'black'
         self.add((0, 7), Rook(colour))

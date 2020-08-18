@@ -23,6 +23,7 @@ def newgame():
     ui.inputlabel = f'{game.turn} player: '
     ui.errmsg = None
     ui.btnlabel = 'Move'
+    ui.info = game.info
     return redirect('/play')
 
 
@@ -42,6 +43,7 @@ def play():
             ui.errmsg = None
             start, end = output
             game.update(start, end)
+            ui.info = game.info
             game.next_turn()
             ui.turn = game.turn
             ui.board = game.display()
