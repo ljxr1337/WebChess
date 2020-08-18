@@ -11,9 +11,20 @@
         
         <table>
             {% for row in ui.board %}
+                {% set outer_loop = loop %}
                 <tr>
                 {% for cell in row %}
-                    <td>&nbsp{{ cell }}&nbsp</td>
+                    {% if outer_loop.index0 == 0 or loop.index0 == 0 %}
+                        <td class="label">&nbsp{{ cell }}&nbsp</td>
+                    {% else %}
+                        {% if loop.index0%2 == 0 and outer_loop.index0%2 == 1 %}
+                            <td class="board" style="background-color: rgb(209,139,71)">&nbsp{{ cell }}&nbsp</td>
+                        {% elif loop.index0%2 == 1 and outer_loop.index0%2 == 0 %}
+                            <td class="board" style="background-color: rgb(209,139,71)">&nbsp{{ cell }}&nbsp</td>
+                        {% else %}
+                            <td class="board" style="background-color: rgb(255,206,158)">&nbsp{{ cell }}&nbsp</td>
+                        {% endif %}
+                    {% endif %}
                 {% endfor %}
                 </tr>
             {% endfor %}

@@ -55,9 +55,14 @@ table {
 
 }
 
-td {
+.board {
     font-size: 25px;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     border:2px solid white;
+}
+
+.label {
+    font-size: 25px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
