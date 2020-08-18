@@ -48,11 +48,11 @@ class King(BasePiece):
         x, y, dist = self.vector(start, end)
         return dist == 1
 
-    def get_symbol(self):
+    def get_img(self):
         if self.colour == "white":
-            return "♔"
+            return "WKing"
         else:
-            return "♚"
+            return "BKing"
 
 
 
@@ -70,11 +70,11 @@ class Queen(BasePiece):
         else:
             return False
 
-    def get_symbol(self):
+    def get_img(self):
         if self.colour == "white":
-            return "♕"
+            return "WQ"
         else:
-            return "♛"
+            return "BQ"
 
 class Bishop(BasePiece):
     name = 'bishop'
@@ -88,11 +88,11 @@ class Bishop(BasePiece):
         else:
             return False
 
-    def get_symbol(self):
+    def get_img(self):
         if self.colour == "white":
-            return "♗"
+            return "WB"
         else:
-            return "♝"
+            return "BB"
 
 class Knight(BasePiece):
     name = 'knight'
@@ -106,11 +106,11 @@ class Knight(BasePiece):
         else:
             return False
 
-    def get_symbol(self):
+    def get_img(self):
         if self.colour == "white":
-            return "♘"
+            return "WKnight"
         else:
-            return "♞"
+            return "BKnight"
 
 
 class Rook(BasePiece):
@@ -137,11 +137,11 @@ class Rook(BasePiece):
                 return True
             else:
                 return False
-    def get_symbol(self):
+    def get_img(self):
         if self.colour == "white":
-            return "♖"
+            return "WR"
         else:
-            return "♜"
+            return "BR"
 
 
 class Pawn(BasePiece):
@@ -158,11 +158,11 @@ class Pawn(BasePiece):
                 return True
         return False
 
-    def get_symbol(self):
+    def get_img(self):
         if self.colour == "white":
-            return "♙"
+            return "WP"
         else:
-            return "♟︎"
+            return "BP"
 
 
 class Board:
@@ -410,10 +410,10 @@ class Board:
                 coord = (col, row)  # tuple
                 if coord in self.coords():
                     piece = self.get_piece(coord)
-                    rowlist.append(f'{piece.get_symbol()}')
+                    rowlist.append(f'{piece.get_img()}')
                 else:
                     piece = None
-                    rowlist.append('  ')
+                    rowlist.append('None')
             board.append(rowlist)
             if self.checkmate is not None:
                 print(f'{self.checkmate} is checkmated!')

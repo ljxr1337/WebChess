@@ -18,11 +18,12 @@
                         <td class="label">&nbsp{{ cell }}&nbsp</td>
                     {% else %}
                         {% if loop.index0%2 == 0 and outer_loop.index0%2 == 1 %}
-                            <td class="board" style="background-color: rgb(209,139,71)">&nbsp{{ cell }}&nbsp</td>
+                            <td class="board" style="background-color: rgb(209,139,71)"><img class="symbol" src="../static/{{ cell }}.png"></td>
                         {% elif loop.index0%2 == 1 and outer_loop.index0%2 == 0 %}
-                            <td class="board" style="background-color: rgb(209,139,71)">&nbsp{{ cell }}&nbsp</td>
+                            <td class="board" style="background-color: rgb(209,139,71)"><img class="symbol" src="../static/{{ cell }}.png"></td>
+                            <!-- <td class="board" style="background-color: rgb(209,139,71)">&nbsp{{ cell }}&nbsp</td> -->
                         {% else %}
-                            <td class="board" style="background-color: rgb(255,206,158)">&nbsp{{ cell }}&nbsp</td>
+                            <td class="board" style="background-color: rgb(255,206,158)"><img class="symbol" src="../static/{{ cell }}.png"></td>
                         {% endif %}
                     {% endif %}
                 {% endfor %}
