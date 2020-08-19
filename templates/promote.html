@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<head>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='chessstyle.css') }}" rel="stylesheet" type="text/css">
+</head>
+
+<body id="myPage" data-spy="scroll" data-target=".navbar" data-offset="60" style="background-color:#6B7A8F;">
+    <div class="jumbotron text-center">
+        <h1>ChessGame</h1> 
+        <br>&nbsp;
+        
+        <table>
+            {% for row in ui.board %}
+                {% set outer_loop = loop %}
+                <tr>
+                {% for cell in row %}
+                    {% if outer_loop.index0 == 0 or loop.index0 == 0 %}
+                        <td class="label">&nbsp{{ cell }}&nbsp</td>
+                    {% else %}
+                        {% if loop.index0%2 == 0 and outer_loop.index0%2 == 1 %}
+                            <td class="board" style="background-color: rgb(209,139,71)"><img class="symbol" src="../static/chesspieces/{{ cell }}.png"></td>
+                        {% elif loop.index0%2 == 1 and outer_loop.index0%2 == 0 %}
+                            <td class="board" style="background-color: rgb(209,139,71)"><img class="symbol" src="../static/chesspieces/{{ cell }}.png"></td>
+                            <!-- <td class="board" style="background-color: rgb(209,139,71)">&nbsp{{ cell }}&nbsp</td> -->
+                        {% else %}
+                            <td class="board" style="background-color: rgb(255,206,158)"><img class="symbol" src="../static/chesspieces/{{ cell }}.png"></td>
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
+                </tr>
+            {% endfor %}
+        </table>
+        <br>&nbsp;
+        <form action="promote" method="get">
+        <!-- <div class="input-group col-xs-9 col-md-3 div-center">
+            <input name="move" type="text" required="" class="form-control" id="move" placeholder="{{ui.turn}} player" size="32">
+            <br>&nbsp;
+        </div> -->
+        {% if ui.errmsg != None %}
+            <div class="alert alert-danger" style="width: 500px; align-content: center; display: inline-block;">
+                <strong>Error!</strong> {{ ui.errmsg }}
+            </div>
+        {% endif %}
+        <br>&nbsp;
+        <div class="alert alert-info" style="width: 500px; align-content: center; display: inline-block;">
+            <strong>Previous Move:</strong> {{ ui.info }}
+        </div>
+        <br>&nbsp;
+        <div class="alert alert-success" style="width: 500px; align-content: center; display: inline-block;">
+            <strong>Promotion at ({{ ui.info[-2] }}, {{ ui.info[-1] }}):</strong>
+            <br>&nbsp;
+            Choose a piece to promote to
+            <br>&nbsp;
+            <input type="submit" name="promote" id="promote" value="Rook" class="btn btn-default mx-auto">
+            <input type="submit" name="promote" id="promote" value="Queen" class="btn btn-default mx-auto">
+            <input type="submit" name="promote" id="promote" value="Knight" class="btn btn-default mx-auto">
+            <input type="submit" name="promote" id="promote" value="Bishop" class="btn btn-default mx-auto">
+        </div>
+        <div class="input-group col-xs-9 col-md-3 div-center">
+            <!-- <input name="submit" type="submit" class="btn btn-default mx-auto d-block" id="submit" value="&nbsp;&nbsp;&nbsp;&nbsp;Move&nbsp;&nbsp;&nbsp;&nbsp;"> -->
+            <!-- <input type="submit" name="promote" id="promote" value="Rook" class="btn btn-default mx-auto d-block">
+            <input type="submit" name="promote" id="promote" value="Queen" class="btn btn-default mx-auto d-block">
+            <input type="submit" name="promote" id="promote" value="Knight" class="btn btn-default mx-auto d-block">
+            <input type="submit" name="promote" id="promote" value="Bishop" class="btn btn-default mx-auto d-block"> -->
+            <br>&nbsp;
+    </div>
+        </form>  
+      </div>
+</body>

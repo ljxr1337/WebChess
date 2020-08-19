@@ -1,3 +1,6 @@
+# from main import promote
+
+
 class WebInterface:
     def __init__(self):
         self.inputlabel = None
@@ -260,11 +263,14 @@ class Board:
             for opprow, colour in zip([0, 7], ['black', 'white']):
                 if row == opprow and piece.name == 'pawn' \
                         and piece.colour == colour:
+                    print(PieceClass)
                     if PieceClass is None:
-                        PieceClass = self.promoteprompt()
-                    promoted_piece = PieceClass(colour)
-                    self.remove(coord)
-                    self.add(coord, promoted_piece)
+                        return True
+                    else:
+                        promoted_piece = PieceClass(colour)
+                        self.info = f"Promoted pawn at {coord} to {promoted_piece.name}"
+                        self.remove(coord)
+                        self.add(coord, promoted_piece)
 
     def king_and_rook_unmoved(self, colour, rook_coord):
         row = rook_coord[1]
@@ -481,7 +487,6 @@ class Board:
         else:
             raise MoveError('Unknown error, please report '
                              f'(movetype={repr(movetype)}).')
-        self.promotepawns()
         if not self.alive('white', 'king'):
             self.winner = 'black'
         elif not self.alive('black', 'king'):

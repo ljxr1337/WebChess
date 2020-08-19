@@ -1,12 +1,12 @@
 from flask import Flask
 from flask import render_template, redirect, request
 # from werkzeug.wrappers import Request
-from chess import WebInterface, Board
+from chess import WebInterface, Board, Rook, Bishop, Queen, Knight
 
 
 app = Flask(__name__)
 ui = WebInterface()
-game = Board()
+game = Board(debug=True)
 
 @app.route('/')
 def root():
@@ -44,10 +44,14 @@ def play():
             start, end = output
             game.update(start, end)
             ui.info = game.info
-            game.next_turn()
-            ui.turn = game.turn
-            ui.board = game.display()
-            return render_template('chess.html', ui=ui)
+            if game.promotepawns():
+                ui.board = game.display()
+                return redirect('/promote')
+            else:
+                game.next_turn()
+                ui.turn = game.turn
+                ui.board = game.display()
+                return render_template('chess.html', ui=ui)
 
     # TODO: Validate move, redirect player back to /play again if move is invalid
     # If move is valid, check for pawns to promote
@@ -55,6 +59,24 @@ def play():
 
 @app.route('/promote')
 def promote():
-    pass
+    piece = request.args.get("promote", None)
+    if piece is None:
+        return render_template("promote.html", ui=ui)
+    else:
+        piece = request.args.get("promote", None)
+        if piece == 'Rook':
+            PieceClass = Rook
+        elif piece == 'Knight':
+            PieceClass = Knight
+        elif piece == 'Bishop':
+            PieceClass = Bishop
+        elif piece == 'Queen':
+            PieceClass = Queen
+        game.promotepawns(PieceClass=PieceClass)
+        game.next_turn()
+        ui.turn = game.turn
+        ui.board = game.display()
+        ui.info = game.info
+        return redirect("/play")
 
 app.run()
