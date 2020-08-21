@@ -82,6 +82,9 @@ movehistory = MoveHistory(10)
 
 @app.route('/undo')
 def undo():
-    move = movehistory.pop()
+    move = game.movehistory.pop()
+    game.undo(move)
+    game.next_turn()
+    return redirect("/play")
 
 app.run()

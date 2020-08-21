@@ -254,6 +254,16 @@ class Board:
         self.winner = None
         self.checkmate = None
         self.info = None
+        self.movehistory = MoveHistory(10)
+    def undo(self, move):
+        added_pieces = move.added
+        removed_pieces = move.removed
+        for dict in removed_pieces:
+            coord, piece = dict.items()
+            self.add(coord, piece)
+        for dict in added_pieces:
+            coord, piece = dict.items()
+            self.remove(coord, piece)
     
     def coords(self):
         return list(self._position.keys())
@@ -528,9 +538,11 @@ class Board:
             self.printmove(start, end, capture=True)
             self.remove(end)
             self.move(start, end)
+            self.movehistory.push(move)
         elif movetype == 'move':
             self.printmove(start, end)
             self.move(start, end)
+            self.movehistory.push(move)
         else:
             raise MoveError('Unknown error, please report '
                              f'(movetype={repr(movetype)}).')
