@@ -1,7 +1,7 @@
 from flask import Flask
 from flask import render_template, redirect, request
 # from werkzeug.wrappers import Request
-from chess import WebInterface, Board, Rook, Bishop, Queen, Knight
+from chess import *
 
 
 app = Flask(__name__)
@@ -41,8 +41,7 @@ def play():
             return render_template('chess.html', ui=ui)
         else:
             ui.errmsg = None
-            start, end = output
-            game.update(start, end)
+            game.update(output)
             ui.info = game.info
             if game.promotepawns():
                 ui.board = game.display()
@@ -78,5 +77,11 @@ def promote():
         ui.board = game.display()
         ui.info = game.info
         return redirect("/play")
+
+movehistory = MoveHistory(10)
+
+@app.route('/undo')
+def undo():
+    move = movehistory.pop()
 
 app.run()

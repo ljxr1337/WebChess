@@ -9,8 +9,53 @@ class WebInterface:
         self.board = None
         self.info = None
 
+class MoveHistory:
+    '''MoveHistory works like a CircularStack'''
+    def __init__(self, size):
+        # Remember to validate input
+        self.size = size
+        self.__data = [None] * size
+        self.head = None
+    
+    def push(self, move):
+        if self.head is None:
+            self.head = 0
+        else:
+            self.head = (self.head + 1) % self.size
+        self.__data[self.head] = move
+            
+    def pop(self):
+        # Remember to check if MoveHistory is empty
+        move = self.__data[self.head]
+        self.__data[self.head] = None
+        if self.head is None:
+            raise IndexError('No move history.')
+        elif self.head == 0:
+            self.head = self.size - 1
+        else:
+            self.head -= 1
+        return move
 
 
+class Move:
+    def __init__(self, start, end, Board):
+        self.start = start
+        self.end = end
+        self.player = Board.turn
+        self.addedpiece = Board.get_piece(start)
+        self.removedpiece = Board.get_piece(end)
+        self.x, self.y, self.dist = self.vector(self.start,self.end)
+        self.step = self.dist
+        self.added = [{self.end: self.addedpiece}]
+        self.removed = [{self.start: self.removedpiece}]
+    @staticmethod
+    def vector(start, end):
+        x = end[0] - start[0]
+        y = end[1] - start[1]
+        dist = abs(x) + abs(y)
+        return x, y, dist
+
+        
 class MoveError(Exception):
     '''Custom error for invalid moves.'''
     pass
@@ -462,13 +507,15 @@ class Board:
                     # print('Invalid move. Please make a valid move.')
                     return False, 'Invalid move. Please make a valid move.'
                 else:
-                    return True, (start, end)
+                    return True, Move(start, end, self)
 
-    def update(self, start, end):
+    def update(self, move):
         '''
         Update board according to requested move.
         If an opponent piece is at end, capture it.
         '''
+        start = move.start
+        end = move.end
         if self.debug:
             print('== UPDATE ==')
         movetype = self.movetype(start, end)
