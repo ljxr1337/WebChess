@@ -85,6 +85,9 @@ def undo():
     move = game.movehistory.pop()
     game.undo(move)
     game.next_turn()
+    ui.turn = game.turn
+    ui.board = game.display()
+    ui.info = game.info
     return redirect("/play")
 
 app.run()

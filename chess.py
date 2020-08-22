@@ -47,7 +47,7 @@ class Move:
         self.x, self.y, self.dist = self.vector(self.start,self.end)
         self.step = self.dist
         self.added = [{self.end: self.addedpiece}]
-        self.removed = [{self.start: self.removedpiece}]
+        self.removed = [{self.start: self.removedpiece},{self.start: self.addedpiece}]
     @staticmethod
     def vector(start, end):
         x = end[0] - start[0]
@@ -258,12 +258,14 @@ class Board:
     def undo(self, move):
         added_pieces = move.added
         removed_pieces = move.removed
-        for dict in removed_pieces:
-            coord, piece = dict.items()
-            self.add(coord, piece)
-        for dict in added_pieces:
-            coord, piece = dict.items()
-            self.remove(coord, piece)
+        for dict_ in removed_pieces:
+            for coord, piece in dict_.items():
+                if piece is not None:
+                    self.add(coord, piece)
+        for dict_2 in added_pieces:
+            for coord in dict_2.keys():
+                self.remove(coord)
+            
     
     def coords(self):
         return list(self._position.keys())
