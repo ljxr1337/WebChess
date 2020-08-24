@@ -1,12 +1,11 @@
-from flask import Flask
-from flask import render_template, redirect, request
+from flask import Flask, render_template, redirect, request
 # from werkzeug.wrappers import Request
-from chess import WebInterface, Board, Rook, Bishop, Queen, Knight
+from chess import *
 
 
 app = Flask(__name__)
-ui = WebInterface()
-game = Board(debug=True)
+# ui = WebInterface()
+# game = Board(debug=False)
 
 @app.route('/')
 def root():
@@ -17,6 +16,10 @@ def newgame():
     # Note that in Python, objects and variables
     # in the global space are available to
     # top-level functions
+    global ui
+    ui = WebInterface()
+    global game
+    game = Board(debug=False)
     game.start()
     ui.board = game.display()
     ui.turn = game.turn
@@ -27,30 +30,33 @@ def newgame():
     return redirect('/play')
 
 
-@app.route('/play')
+@app.route('/play', methods=['GET', 'POST'])
 def play():
     # TODO: get player move from GET request object
     # TODO: if there is no player move, render the page template
-    move = request.args.get("move", None)
+    move = request.form.get("move", None)
+    ui.empty = game.movehistory.empty()
     if move is None:
         return render_template('chess.html', ui=ui)
     else:
+        ui.empty = game.movehistory.empty()
         valid, output = game.prompt(move)
         if not valid:
             ui.errmsg = output
             return render_template('chess.html', ui=ui)
         else:
             ui.errmsg = None
-            start, end = output
-            game.update(start, end)
+            game.update(output)
+            ui.empty = game.movehistory.empty()
+            if game.winner is not None:
+                return redirect('/winner')
             ui.info = game.info
+            ui.board = game.display()
             if game.promotepawns():
-                ui.board = game.display()
                 return redirect('/promote')
             else:
                 game.next_turn()
                 ui.turn = game.turn
-                ui.board = game.display()
                 return render_template('chess.html', ui=ui)
 
     # TODO: Validate move, redirect player back to /play again if move is invalid
@@ -63,7 +69,6 @@ def promote():
     if piece is None:
         return render_template("promote.html", ui=ui)
     else:
-        piece = request.args.get("promote", None)
         if piece == 'Rook':
             PieceClass = Rook
         elif piece == 'Knight':
@@ -72,11 +77,26 @@ def promote():
             PieceClass = Bishop
         elif piece == 'Queen':
             PieceClass = Queen
-        game.promotepawns(PieceClass=PieceClass)
+        game.promotepawns(PieceClass)
         game.next_turn()
         ui.turn = game.turn
         ui.board = game.display()
         ui.info = game.info
         return redirect("/play")
+
+@app.route('/undo')
+def undo():
+    move = game.movehistory.pop()
+    game.undo(move)
+    game.next_turn()
+    ui.turn = game.turn
+    ui.board = game.display()
+    ui.info = f"undo {game.info}"
+    return redirect("/play")
+
+@app.route("/winner")
+def winner():
+    winner = game.winner
+    return render_template("winner.html", winner = winner)
 
 app.run()
