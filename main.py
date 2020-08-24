@@ -87,7 +87,7 @@ def undo():
     game.next_turn()
     ui.turn = game.turn
     ui.board = game.display()
-    ui.info = game.info
+    ui.info = f"undo {game.info}"
     return redirect("/play")
 
 app.run()
