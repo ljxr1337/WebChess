@@ -8,6 +8,7 @@ class WebInterface:
         self.errmsg = None
         self.board = None
         self.info = None
+        self.empty = True
 
 class MoveHistory:
     '''MoveHistory works like a CircularStack'''
@@ -29,12 +30,20 @@ class MoveHistory:
         move = self.__data[self.head]
         self.__data[self.head] = None
         if self.head is None:
-            raise IndexError('No move history.')
+            raise IndexError("No move history.")
+
         elif self.head == 0:
             self.head = self.size - 1
         else:
             self.head -= 1
         return move
+
+    def empty(self):
+        empty = True
+        for data in self.__data:
+            if data is not None:
+                empty = False
+        return empty
 
 
 class Move:
