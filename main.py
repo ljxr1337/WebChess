@@ -99,4 +99,4 @@ def winner():
     winner = game.winner
     return render_template("winner.html", winner = winner)
 
-app.run()
+app.run("0.0.0.0")
